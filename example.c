@@ -33,19 +33,18 @@
            *out++ = data->left_phase;  /* left */
            *out++ = data->right_phase;  /* right */
            /* Generate simple sawtooth phaser that ranges between -1.0 and 1.0. */
-           data->left_phase += 0.01f;
+           data->left_phase = data->left_phase * -1;
            /* When signal reaches top, drop back down. */
-           if( data->left_phase >= 1.0f ) data->left_phase -= 2.0f;
+           //if( data->left_phase >= 1.0f ) data->left_phase -= 2.0f;
            /* higher pitch so we can distinguish left and right. */
-           data->right_phase += 0.03f;
-           if( data->right_phase >= 1.0f ) data->right_phase -= 2.0f;
+           data->right_phase = data->right_phase * -1;
+           //if( data->right_phase <= -1.0f ) data->right_phase += 2.0f;
        }
        return 0;
    }
    
    /*******************************************************************/
    static paTestData data;
-   int main(void);
    int main(void)
    {
        PaStream *stream;
@@ -53,7 +52,7 @@
        
        printf("PortAudio Test: output sawtooth wave.\n");
        /* Initialize our data for use by callback. */
-       data.left_phase = data.right_phase = 0.0;
+       data.left_phase = data.right_phase = 1.0;
        /* Initialize library before making any other calls. */
        err = Pa_Initialize();
        if( err != paNoError ) goto error;

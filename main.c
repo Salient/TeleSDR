@@ -1,5 +1,8 @@
 #include "portaudio.h"
 #include <stdio.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <stdlib.h>
 
 
 typedef struct {
@@ -11,8 +14,29 @@ typedef struct {
 
 int main() {
 
-	printf("ohai world\r\n");
-}
+	printf("Initializing TeleSDR...Please wait...\r\n");
+
+        int sockfd; // socket descriptor
+        char buffer[255];
+        struct sockaddr_in sockconfig;
+        memset(&sockconfig, 0, size_of(sockconfig));
+        
+	printf("Engaging network interface...\r\n");
+
+        sockfd = socket(AF_INET,SOCK_STREAM,0);
+        if (sockfd < 0 ) {
+            printf("Error creating socket. Bailing \r\n");
+            return 1;
+        }
+
+
+        sockconfig.sin_addr.s_addr = inet_addr("127.0.0.1"); // TODO: pass this address from command line
+        sockconfig.sin_family = AF_INET;
+        sockconfig.sin_port = htons(8321);
+
+        if (connect(sockfd, (struct) sockconfig
+}       
+
 
 static int patestCallback( const void *inputBuffer, void *outputBuffer,
                            unsigned long framesPerBuffer,

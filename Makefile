@@ -5,6 +5,9 @@ LIBRA = -lportaudio
 pexam: pexam.o
 	gcc $(HEADER)   $(LIBB)  $<  -o  $@ $(LIBRA)
 
+teleclient: teleclient.o
+	gcc $(HEADER)   $(LIBB)  $<  -o  $@ $(LIBRA)
+
 pexam.o: 
 	gcc -c -o pexam.o $(HEADER) example.c 
 
